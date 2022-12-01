@@ -20,6 +20,7 @@ namespace Simon
     /// </summary>
     public partial class MainWindow : Window
     {
+        Singleton singleton;
         public MainWindow()
         {
             InitializeComponent();
@@ -29,6 +30,31 @@ namespace Simon
         private void init()
         {
             lbError.Visibility = Visibility.Hidden;
+            singleton =  Singleton.Instance;
+        }
+
+        private void BtStart_Click(object sender, RoutedEventArgs e)
+        {
+            PantallaJoc j = new PantallaJoc();
+            if (txNom.Text.Length == 0)
+            {
+                lbError.Visibility = Visibility.Visible;
+                return;
+            }
+
+            singleton.Nom = txNom.Text;
+
+            j.Show();
+
+            this.Hide();
+        }
+
+        private void BtHelp_Click(object sender, RoutedEventArgs e)
+        {
+            Ajuda ajuda = new Ajuda();
+
+            ajuda.Show();
+            this.Close();
         }
     }
 }

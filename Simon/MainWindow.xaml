@@ -5,16 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Simon"
         mc:Ignorable="d"
-        Title="Simon" Height="450" Width="800" ResizeMode="NoResize" ShowInTaskbar="False" WindowStyle="None">
+        Title="Simon" Height="450" Width="800" ResizeMode="NoResize" ShowInTaskbar="False" WindowStyle="None" WindowStartupLocation="CenterScreen">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="509*"/>
+            <ColumnDefinition Width="8*"/>
+            <ColumnDefinition Width="284*"/>
+        </Grid.ColumnDefinitions>
         <TextBlock x:Name="txTitol" HorizontalAlignment="Left" Margin="321,10,0,0" TextWrapping="Wrap" Text="Simon" VerticalAlignment="Top" Height="54" Width="155" FontSize="50" FontFamily="Calibri Light"/>
         <TextBlock x:Name="lbNomJugador" HorizontalAlignment="Left" Margin="55,86,0,0" TextWrapping="Wrap" Text="Entri el nom del jugador" VerticalAlignment="Top" Height="35" Width="265" FontSize="20" FontFamily="Calibri Light"/>
         <TextBox x:Name="txNom" HorizontalAlignment="Left" Height="32" Margin="55,121,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="234" FontFamily="Calibri Light" FontSize="20"/>
-        <Button x:Name="btStart" Content="Començar" HorizontalAlignment="Left" Margin="55,194,0,0" VerticalAlignment="Top" Width="234" Height="82"/>
-        <Button x:Name="btHelp" Content ="Ajuda" HorizontalAlignment="Left" Margin="55,315,0,0" VerticalAlignment="Top" Width="234" Height="82"/>
-        <DataGrid x:Name="tbPuntuacions" HorizontalAlignment="Left" Height="311" Margin="494,86,0,0" VerticalAlignment="Top" Width="285"/>
-        <TextBlock x:Name="lbNomJugador_Copy" HorizontalAlignment="Left" Margin="583,51,0,0" TextWrapping="Wrap" Text="Puntuacions" VerticalAlignment="Top" Height="35" Width="111" FontSize="20" FontFamily="Calibri Light"/>
-        <TextBlock x:Name="lbError" HorizontalAlignment="Left" Margin="21,154,0,0" TextWrapping="Wrap" Text="El nom no pot estar buït" VerticalAlignment="Top" Height="35" Width="214" FontSize="20" FontFamily="Calibri Light" Foreground="#FFEE0000"/>
+        <Button x:Name="btStart" Content="Començar" HorizontalAlignment="Left" Margin="55,194,0,0" VerticalAlignment="Top" Width="234" Height="82" Click="BtStart_Click"/>
+        <Button x:Name="btHelp" Content ="Ajuda" HorizontalAlignment="Left" Margin="55,315,0,0" VerticalAlignment="Top" Width="234" Height="82" Click="BtHelp_Click"/>
+        <DataGrid x:Name="tbPuntuacions" HorizontalAlignment="Left" Height="311" Margin="494,86,0,0" VerticalAlignment="Top" Width="285" Grid.ColumnSpan="3"/>
+        <TextBlock x:Name="lbNomJugador_Copy" HorizontalAlignment="Left" Margin="66,51,0,0" TextWrapping="Wrap" Text="Puntuacions" VerticalAlignment="Top" Height="35" Width="112" FontSize="20" FontFamily="Calibri Light" Grid.Column="2"/>
+        <TextBlock x:Name="lbError" HorizontalAlignment="Left" Margin="55,153,0,0" TextWrapping="Wrap" Text="El nom no pot estar buït" VerticalAlignment="Top" Height="35" Width="214" FontSize="20" FontFamily="Calibri Light" Foreground="#FFEE0000"/>
 
     </Grid>
 </Window>
