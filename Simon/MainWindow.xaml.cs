@@ -35,18 +35,36 @@ namespace Simon
 
         private void BtStart_Click(object sender, RoutedEventArgs e)
         {
-            PantallaJoc j = new PantallaJoc();
             if (txNom.Text.Length == 0)
             {
                 lbError.Visibility = Visibility.Visible;
                 return;
             }
 
-            singleton.Nom = txNom.Text;
+            PantallaJoc pantalla = initPantallaJoc();
 
-            j.Show();
+            pantalla.Show();
 
             this.Hide();
+        }
+
+        private PantallaJoc initPantallaJoc()
+        {
+            PantallaJoc res = new PantallaJoc(txNom.Text);
+            res.KeyDown += res.Window_KeyDown;
+            res.KeyUp += res.Window_KeyUp;
+            res.UnableKeys = () =>
+            {
+                res.KeyDown -= res.Window_KeyDown;
+                res.KeyUp -= res.Window_KeyUp;
+            };
+            res.EnableKeys = () =>
+            {
+                res.KeyDown -= res.Window_KeyDown;
+                res.KeyUp -= res.Window_KeyUp;
+            };
+
+            return res;
         }
 
         private void BtHelp_Click(object sender, RoutedEventArgs e)

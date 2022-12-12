@@ -17,14 +17,19 @@ namespace Simon
         Stack<int> actual = new Stack<int>();
         List<int> historic= new List<int>();
         List<ColorButton> butons = new List<ColorButton>();
+        public Action UnableKeys { get; set; }
+        public Action EnableKeys { get; set; }
         ColorButton currentButton;
         Random random = new Random();
+        String nom = "";
         int puntuacio = 0;
+        int interval = 1000;
 
         System.Windows.Threading.DispatcherTimer dispatcher = new System.Windows.Threading.DispatcherTimer();
 
-        public PantallaJoc()
-        {
+        public PantallaJoc(String nom)
+        {               
+            this.nom = nom;
             InitializeComponent();
             init();
         }
@@ -39,7 +44,6 @@ namespace Simon
             historic = new List<int>();
             int number =getNextNumber();
             historic.Add(number);
-
             initSequence();
         }
 
@@ -55,9 +59,8 @@ namespace Simon
             btD.UnselectColor = Color.FromRgb(0,0,97);
         }
 
-            private void test()
+        private void test()
         {
-
             int number = getNextNumber();
             historic.Add(number);
 
@@ -70,13 +73,12 @@ namespace Simon
 
         private void initSequence()
         {
-
             this.Background = new SolidColorBrush(Color.FromRgb(220, 220, 220));
-            // setButtonsEnabled(false);
             changeDifficult();
-            removeHandlers();
+            removeListeners();
             actual = new Stack<int>(historic);
             dispatcher.Start();
+
         }
 
         private void reset()
@@ -89,7 +91,6 @@ namespace Simon
 
         private void changeDifficult()
         {
-            int interval = 0;
             int score = Int32.Parse(lbScore.Content.ToString());
 
             if (score <= 2)
@@ -129,38 +130,41 @@ namespace Simon
             dispatcher.Interval = TimeSpan.FromMilliseconds(interval);
         }
 
-        private void removeHandlers()
+        private void removeListeners()
         {
-            btW.MouseLeftButtonDown -= MouseDown;
-            btA.MouseLeftButtonDown -= MouseDown;
-            btS.MouseLeftButtonDown -= MouseDown;
-            btD.MouseLeftButtonDown -= MouseDown;
+            btW.MouseLeftButtonDown -= MouseDownEvent;
+            btA.MouseLeftButtonDown -= MouseDownEvent;
+            btS.MouseLeftButtonDown -= MouseDownEvent;
+            btD.MouseLeftButtonDown -= MouseDownEvent;
 
-            btW.MouseLeftButtonUp-= MouseUp;
-            btA.MouseLeftButtonUp -= MouseUp;
-            btS.MouseLeftButtonUp -= MouseUp;
-            btD.MouseLeftButtonUp -= MouseUp;
-
+            btW.MouseLeftButtonUp-= MouseUpEvent;
+            btA.MouseLeftButtonUp -= MouseUpEvent;
+            btS.MouseLeftButtonUp -= MouseUpEvent;
+            btD.MouseLeftButtonUp -= MouseUpEvent;
+           // if(this.UnableKeys!=null)
+             //   this.UnableKeys();
         }
 
-        private void implementHandlers()
+        private void implementEvents()
         {
-            btW.MouseLeftButtonDown += MouseDown;
-            btA.MouseLeftButtonDown += MouseDown;
-            btS.MouseLeftButtonDown += MouseDown;
-            btD.MouseLeftButtonDown += MouseDown;
+            btW.MouseLeftButtonDown += MouseDownEvent;
+            btA.MouseLeftButtonDown += MouseDownEvent;
+            btS.MouseLeftButtonDown += MouseDownEvent;
+            btD.MouseLeftButtonDown += MouseDownEvent;
 
-            btW.MouseLeftButtonUp += MouseUp;
-            btA.MouseLeftButtonUp += MouseUp;
-            btS.MouseLeftButtonUp += MouseUp;
-            btD.MouseLeftButtonUp += MouseUp;
+            btW.MouseLeftButtonUp += MouseUpEvent;
+            btA.MouseLeftButtonUp += MouseUpEvent;
+            btS.MouseLeftButtonUp += MouseUpEvent;
+            btD.MouseLeftButtonUp += MouseUpEvent;
+          //  if (this.EnableKeys != null)
+            //     this.EnableKeys();
         }
 
         private void initTimer()
         {
             dispatcher.Tick += new EventHandler(initSequence);
-            dispatcher.Interval = TimeSpan.FromMilliseconds(100);
-           
+            dispatcher.Interval = TimeSpan.FromMilliseconds(300);
+
         }
 
         private void initListButtons()
@@ -171,9 +175,11 @@ namespace Simon
             butons.Add(btD);
         }
 
-        private void findButtonByTag(int tag)
+        private ColorButton findButtonByTag(int tag)
         {
-            currentButton = butons.Find(buto => buto.Tag.Equals(tag + ""));   
+            currentButton = butons.Find(buto => buto.Tag.Equals(tag + ""));
+
+            return currentButton;
         }
 
         private int getNextNumber()
@@ -185,6 +191,10 @@ namespace Simon
 
         private void initSequence(object sender, EventArgs e)
         {
+            
+            if (interval != dispatcher.Interval.TotalMilliseconds)
+                return;
+
             if (currentButton!=null)
             {
                 currentButton.Background = new SolidColorBrush(currentButton.UnselectColor);
@@ -201,13 +211,22 @@ namespace Simon
             else
             {
                 actual = new Stack<int>(historic);
-                implementHandlers();
+                implementEvents();
                 this.Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
                 dispatcher.Stop();
             }
         }
 
-        private void validarOpcio(ColorButton btn)
+        private void Timer_Tick()
+        {
+            var now = DateTime.Now;
+            var nowMilliseconds = (int)now.TimeOfDay.TotalMilliseconds;
+            var timerInterval = interval -
+             nowMilliseconds % interval + 5;//5: sometimes the tick comes few millisecs early
+            dispatcher.Interval = TimeSpan.FromMilliseconds(timerInterval);
+        }
+
+            private void validarOpcio(ColorButton btn)
         {
             int tag = Int32.Parse(btn.Tag.ToString());
 
@@ -248,16 +267,21 @@ namespace Simon
         }
 
 
-        private void MouseDown(object sender, MouseButtonEventArgs e)
-        {
+        private void MouseDownEvent(object sender, MouseButtonEventArgs e)
+        {   
+
             ColorButton btn = sender as ColorButton;
-            btn.Background = new SolidColorBrush(btn.CurrentColor);
-            validarOpcio(btn);
+            mouseDownMethod(btn);
         }
 
-        private void MouseUp(object sender, MouseButtonEventArgs e)
+        private void MouseUpEvent(object sender, MouseButtonEventArgs e)
         {
             ColorButton btn = sender as ColorButton;
+            mouseUpMethod(btn);
+        }
+
+        private void mouseUpMethod(ColorButton btn)
+        {
             btn.Background = new SolidColorBrush(btn.UnselectColor);
             if (actual.Count == 0 && lbError.Visibility == Visibility.Hidden)
             {
@@ -272,14 +296,10 @@ namespace Simon
             }
         }
 
-        private void KeyUp(object sender, KeyEventArgs e)
+        private void mouseDownMethod(ColorButton btn)
         {
-            Console.WriteLine("KeyUp");
-        }
-
-        private void KeyDown(object sender, KeyEventArgs e)
-        {
-            Console.WriteLine("KeyDown");
+            btn.Background = new SolidColorBrush(btn.CurrentColor);
+            validarOpcio(btn);
         }
 
         private void BtBack_Click(object sender, RoutedEventArgs e)
@@ -293,5 +313,61 @@ namespace Simon
             pantalla.ShowDialog();
             
         }
+
+        public void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            
+            if (e.Key == Key.W)
+            {
+                mouseDownMethod(findButtonByTag(1));
+            }else if (e.Key == Key.A)
+            {
+                mouseDownMethod(findButtonByTag(2));
+            }
+            else if (e.Key == Key.S)
+            {
+                mouseDownMethod(findButtonByTag(3));
+            }
+            else if (e.Key == Key.D)
+            {
+                mouseDownMethod(findButtonByTag(4));
+            }
+        }
+
+        public void Window_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.W)
+            {
+                mouseUpMethod(findButtonByTag(1));
+            }
+            else if (e.Key == Key.A)
+            {
+                mouseUpMethod(findButtonByTag(2));
+            }
+            else if (e.Key == Key.S)
+            {
+                mouseUpMethod(findButtonByTag(3));
+            }
+            else if (e.Key == Key.D)
+            {
+                mouseUpMethod(findButtonByTag(4));
+            }
+        }
+
+        private void MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            int tag = Int32.Parse(((TextBlock)sender).Tag.ToString());
+            ColorButton btn = findButtonByTag(tag);
+            mouseUpMethod(btn);
+        }
+
+        private void MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            int tag = Int32.Parse(((TextBlock)sender).Tag.ToString());
+            ColorButton btn = findButtonByTag(tag);
+            mouseDownMethod(btn);
+        }
+
+
     }
 }

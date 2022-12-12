@@ -6,23 +6,24 @@
         xmlns:local="clr-namespace:Simon"
         mc:Ignorable="d"
         Title="Simón" Height="450" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None">
-    <Grid x:Name="pnBase" KeyDown="KeyDown" KeyUp="KeyUp" >
+    <Grid x:Name="pnBase" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <local:ColorButton x:Name="btW" Margin="285,134,0,0" VerticalAlignment="Top" Height="82" Tag="1" HorizontalAlignment="Left" Width="234" Background="#FF610000" MouseLeftButtonDown="MouseDown" MouseLeftButtonUp="MouseUp"/>
-        <local:ColorButton x:Name="btA" HorizontalAlignment="Left" Margin="32,234,0,0" VerticalAlignment="Top" Width="234" Height="82" Tag="2"  Background="#FF015F06" MouseLeftButtonDown="MouseDown" MouseLeftButtonUp="MouseUp"/>
-        <local:ColorButton x:Name="btD" HorizontalAlignment="Left" Margin="530,234,0,0" VerticalAlignment="Top" Width="234" Height="82" Tag="4" Background="#FF000061" MouseLeftButtonDown="MouseDown" MouseLeftButtonUp="MouseUp"/>
-        <local:ColorButton x:Name="btS" HorizontalAlignment="Left" Margin="285,234,0,0" VerticalAlignment="Top" Width="234" Height="82" Tag="3" Background="#FF616100" MouseLeftButtonDown="MouseDown" MouseLeftButtonUp="MouseUp"/>
-        <Button x:Name="btBack" Content="Pausa" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="94" Height="44" Tag="1" Click="BtBack_Click"/>
+        <local:ColorButton x:Name="btW" Margin="285,134,0,0" VerticalAlignment="Top" Height="82" Tag="1" HorizontalAlignment="Left" Width="234" Background="#FF610000" MouseLeftButtonDown="MouseDownEvent" MouseLeftButtonUp="MouseUpEvent"/>
+        <local:ColorButton x:Name="btA" HorizontalAlignment="Left" Margin="32,234,0,0" VerticalAlignment="Top" Width="234" Height="82" Tag="2"  Background="#FF015F06" MouseLeftButtonDown="MouseDownEvent" MouseLeftButtonUp="MouseUpEvent"/>
+        <local:ColorButton x:Name="btD" HorizontalAlignment="Left" Margin="530,234,0,0" VerticalAlignment="Top" Width="234" Height="82" Tag="4" Background="#FF000061" MouseLeftButtonDown="MouseDownEvent" MouseLeftButtonUp="MouseUpEvent"/>
+        <local:ColorButton x:Name="btS" HorizontalAlignment="Left" Margin="285,234,0,0" VerticalAlignment="Top" Width="234" Height="82" Tag="3" Background="#FF616100" MouseLeftButtonDown="MouseDownEvent" MouseLeftButtonUp="MouseUpEvent"/>
+        <Button x:Name="btBack" Content="Pausa" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="148" Height="44" Tag="1" Click="BtBack_Click" FontSize="30"/>
         <Label x:Name="lbError" Content="Has fallat!!" HorizontalAlignment="Left" Margin="302,335,0,0" VerticalAlignment="Top" Height="74" Width="197" FontSize="36" Foreground="#FFDC0000"/>
-        <Label x:Name="lbW" Content="W" HorizontalAlignment="Left" Margin="376,134,0,0" VerticalAlignment="Top" Height="71" Width="60" FontSize="48" Foreground="White"/>
-        <Label x:Name="lbA" Content="A" HorizontalAlignment="Left" Margin="116,234,0,0" VerticalAlignment="Top" Height="82" Width="60" FontSize="48" Foreground="White"/>
-        <Label x:Name="lbS" Content="S" HorizontalAlignment="Left" Margin="376,234,0,0" VerticalAlignment="Top" Height="82" Width="60" FontSize="48" Foreground="White"/>
-        <Label x:Name="lbD" Content="D" HorizontalAlignment="Left" Margin="614,234,0,0" VerticalAlignment="Top" Height="82" Width="60" FontSize="48" Foreground="White"/>
-        <Label x:Name="lbPuntuacio" Content="Puntuació: " HorizontalAlignment="Left" Margin="302,17,0,0" VerticalAlignment="Top" FontSize="20" Height="37" Width="108"/>
-        <Label x:Name="lbScore" Content="0" HorizontalAlignment="Left" Margin="411,17,0,0" VerticalAlignment="Top" FontSize="20" Height="37" Width="21"/>
+        <Label x:Name="lbW" Content="W" HorizontalAlignment="Left" Margin="376,134,0,0" VerticalAlignment="Top" Height="82" Width="60" FontSize="48" Foreground="White" Tag="1" MouseLeftButtonUp="MouseLeftButtonUp" MouseLeftButtonDown="MouseLeftButtonDown"/>
+        <Label x:Name="lbA" Content="A" HorizontalAlignment="Left" Margin="125,234,0,0" VerticalAlignment="Top" Height="82" Width="42" FontSize="48" Foreground="White" Tag="2" MouseLeftButtonUp="MouseLeftButtonUp" MouseLeftButtonDown="MouseLeftButtonDown" RenderTransformOrigin="0.24,0.459"/>
+        <Label x:Name="lbS" Content="S" HorizontalAlignment="Left" Margin="387,234,0,0" VerticalAlignment="Top" Height="82" Width="34" FontSize="48" Foreground="White" Tag="3" MouseLeftButtonUp="MouseLeftButtonUp" MouseLeftButtonDown="MouseLeftButtonDown" RenderTransformOrigin="0.91,0.522"/>
+        <Label x:Name="lbD" Content="D" HorizontalAlignment="Left" Margin="635,234,0,0" VerticalAlignment="Top" Height="82" Width="45" FontSize="48" Foreground="White" Tag="4" MouseLeftButtonUp="MouseLeftButtonUp" MouseLeftButtonDown="MouseLeftButtonDown" RenderTransformOrigin="0.81,0.522"/>
+        <Label x:Name="lbPuntuacio" Content="Puntuació: " HorizontalAlignment="Left" Margin="302,17,0,0" VerticalAlignment="Top" FontSize="30" Height="48" Width="167"/>
+        <Label x:Name="lbScore" Content="0" HorizontalAlignment="Left" Margin="456,17,0,0" VerticalAlignment="Top" FontSize="30" Height="51" Width="88"/>
+        <Label x:Name="lbNom" Content="" HorizontalAlignment="Left" Margin="549,28,0,0" VerticalAlignment="Top" FontSize="20" Height="37" Width="241"/>
 
     </Grid>
 </Window>
