@@ -17,30 +17,38 @@ namespace Simon
         Stack<int> actual = new Stack<int>();
         List<int> historic= new List<int>();
         List<ColorButton> butons = new List<ColorButton>();
-        public Action UnableKeys { get; set; }
-        public Action EnableKeys { get; set; }
+        List<MediaElement> sounds = new List<MediaElement>();
+        public Action UnableListener { get; set; }
+        public Action EnableListener { get; set; }
         ColorButton currentButton;
         Random random = new Random();
         String nom = "";
         int puntuacio = 0;
-        int interval = 1000;
+        int interval = 2;
 
         System.Windows.Threading.DispatcherTimer dispatcher = new System.Windows.Threading.DispatcherTimer();
 
         public PantallaJoc(String nom)
-        {               
-            this.nom = nom;
+        {
             InitializeComponent();
+            lbNom.Content = nom;
+
+        }
+
+        public void start()
+        {
             init();
         }
 
         private void init()
         {
+
             initButonsColors();
             lbError.Visibility = Visibility.Hidden;
             lbScore.Content = "0";
             initTimer();
             initListButtons();
+            initListSounds();
             historic = new List<int>();
             int number =getNextNumber();
             historic.Add(number);
@@ -95,39 +103,14 @@ namespace Simon
 
             if (score <= 2)
             {
-
-                //interval = 1000;
-                interval = 250;
+                interval = 2;
             }
             else if (score <= 5)
             {
-                //interval = 750;
-                interval = 100;
-
-            }
-            /*
-            else if (score <= 7)
-            {
-                //interval = 500;
-                    interval = 50;
-            }
-            else if (score <= 10)
-            {
-
-                    interval = 250;
-            }
-            else if (score <= 15)
-            {
-
-                    interval = 100;
-            }
-            */
-            else
-            {
-                interval = 50;
+                interval = 1;
             }
 
-            dispatcher.Interval = TimeSpan.FromMilliseconds(interval);
+            dispatcher.Interval = TimeSpan.FromSeconds(interval);
         }
 
         private void removeListeners()
@@ -141,8 +124,8 @@ namespace Simon
             btA.MouseLeftButtonUp -= MouseUpEvent;
             btS.MouseLeftButtonUp -= MouseUpEvent;
             btD.MouseLeftButtonUp -= MouseUpEvent;
-           // if(this.UnableKeys!=null)
-             //   this.UnableKeys();
+            if(this.UnableListener!=null)
+                this.UnableListener();
         }
 
         private void implementEvents()
@@ -156,14 +139,14 @@ namespace Simon
             btA.MouseLeftButtonUp += MouseUpEvent;
             btS.MouseLeftButtonUp += MouseUpEvent;
             btD.MouseLeftButtonUp += MouseUpEvent;
-          //  if (this.EnableKeys != null)
-            //     this.EnableKeys();
+            if (this.EnableListener != null)
+                 this.EnableListener();
         }
 
         private void initTimer()
         {
             dispatcher.Tick += new EventHandler(initSequence);
-            dispatcher.Interval = TimeSpan.FromMilliseconds(300);
+            dispatcher.Interval = TimeSpan.FromMilliseconds(500);
 
         }
 
@@ -175,11 +158,24 @@ namespace Simon
             butons.Add(btD);
         }
 
+        private void initListSounds()
+        {
+            sounds.Add(snd1);
+            sounds.Add(snd2);
+            sounds.Add(snd3);
+            sounds.Add(snd4);
+        }
+
         private ColorButton findButtonByTag(int tag)
         {
             currentButton = butons.Find(buto => buto.Tag.Equals(tag + ""));
 
             return currentButton;
+        }
+
+        private MediaElement findMediaByTag(int tag)
+        {
+            return sounds.Find(sound => sound.Tag.Equals(tag + ""));
         }
 
         private int getNextNumber()
@@ -191,21 +187,19 @@ namespace Simon
 
         private void initSequence(object sender, EventArgs e)
         {
-            
-            if (interval != dispatcher.Interval.TotalMilliseconds)
-                return;
 
             if (currentButton!=null)
             {
                 currentButton.Background = new SolidColorBrush(currentButton.UnselectColor);
+                findMediaByTag(int.Parse(currentButton.Tag.ToString())).Stop();
                 currentButton = null;
                 return;
             }
             else if(actual.Count>0)
             {
-
                 findButtonByTag(actual.Pop());
                 currentButton.Background = new SolidColorBrush(currentButton.CurrentColor);
+                findMediaByTag(int.Parse(currentButton.Tag.ToString())).Play();
                 return;
             }
             else
@@ -215,15 +209,6 @@ namespace Simon
                 this.Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
                 dispatcher.Stop();
             }
-        }
-
-        private void Timer_Tick()
-        {
-            var now = DateTime.Now;
-            var nowMilliseconds = (int)now.TimeOfDay.TotalMilliseconds;
-            var timerInterval = interval -
-             nowMilliseconds % interval + 5;//5: sometimes the tick comes few millisecs early
-            dispatcher.Interval = TimeSpan.FromMilliseconds(timerInterval);
         }
 
             private void validarOpcio(ColorButton btn)
@@ -236,6 +221,11 @@ namespace Simon
             }
             else
             {
+                MediaElement el = findMediaByTag(int.Parse(btn.Tag.ToString()));
+                el.Stop();
+
+                sndIncorrect.Play();
+
                 lbError.Visibility = Visibility.Visible;
                 Pausa pausa = new Pausa();
 
@@ -282,6 +272,7 @@ namespace Simon
 
         private void mouseUpMethod(ColorButton btn)
         {
+            validarOpcio(btn);
             btn.Background = new SolidColorBrush(btn.UnselectColor);
             if (actual.Count == 0 && lbError.Visibility == Visibility.Hidden)
             {
@@ -290,16 +281,14 @@ namespace Simon
                 historic.Insert(0, getNextNumber());
                 initSequence();
             }
-            else
-            {
-
-            }
+            
         }
 
         private void mouseDownMethod(ColorButton btn)
         {
             btn.Background = new SolidColorBrush(btn.CurrentColor);
-            validarOpcio(btn);
+            MediaElement el = findMediaByTag(int.Parse(btn.Tag.ToString()));
+            el.Play();
         }
 
         private void BtBack_Click(object sender, RoutedEventArgs e)

@@ -8,7 +8,7 @@
         Title="Ajuda" Height="450" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="54,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="302" Width="683" FontSize="20" TextAlignment="Justify"><Run Text="El joc que hem pensat fer és el Simón. El joc es basa en que tenint 4 botons de colors"/><Run Text=" "/><Run Text="diferents, es vagin il·luminant amb un seqüència aleatòria i l'usuari ha de prémer els"/><Run Text=" "/><Run Text="botons amb el mateix ordre en el que s'ha il·luminat."/><LineBreak/><Run/><LineBreak/><Run Text="Cada cop que el jugador completa la mateixa seqüència, guanya un punt i es torna a"/><Run Text=" "/><Run Text="mostrar la seqüència però amb un botó més il·luminat."/><LineBreak/><Run/><LineBreak/><Run Text="El joc s'acaba quan el jugador falla al prémer un botó erroni."/></TextBlock>
-        <Button x:Name="btEnrere" Content="Enrere" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Height="40" Click="BtEnrere_Click"/>
+        <Button x:Name="btEnrere" Content="Enrere" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Height="40" Click="BtEnrere_Click" FontSize="20"/>
 
     </Grid>
 </Window>

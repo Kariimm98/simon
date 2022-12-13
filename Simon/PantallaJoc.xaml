@@ -24,6 +24,11 @@
         <Label x:Name="lbPuntuacio" Content="Puntuació: " HorizontalAlignment="Left" Margin="302,17,0,0" VerticalAlignment="Top" FontSize="30" Height="48" Width="167"/>
         <Label x:Name="lbScore" Content="0" HorizontalAlignment="Left" Margin="456,17,0,0" VerticalAlignment="Top" FontSize="30" Height="51" Width="88"/>
         <Label x:Name="lbNom" Content="" HorizontalAlignment="Left" Margin="549,28,0,0" VerticalAlignment="Top" FontSize="20" Height="37" Width="241"/>
+        <MediaElement x:Name="snd3" HorizontalAlignment="Left" Height="100" Margin="419,476,0,-126" VerticalAlignment="Top" Width="100" Source="pack://siteoforigin:,,,/Resources/Button3.wav" Tag="3" LoadedBehavior="Manual" UnloadedBehavior="Manual" AutomationProperties.IsOffscreenBehavior="Offscreen" Volume="30"/>
+        <MediaElement x:Name="snd4" HorizontalAlignment="Left" Height="100" Margin="580,476,0,-126" VerticalAlignment="Top" Width="100" Source="pack://siteoforigin:,,,/Resources/Button4.wav" Tag="4" LoadedBehavior="Manual" UnloadedBehavior="Manual" AutomationProperties.IsOffscreenBehavior="Offscreen" Volume="30"/>
+        <MediaElement x:Name="snd2" HorizontalAlignment="Left" Height="100" Margin="302,476,0,-126" VerticalAlignment="Top" Width="100" Source="pack://siteoforigin:,,,/Resources/Button2.wav" Tag="2" LoadedBehavior="Manual" UnloadedBehavior="Manual" AutomationProperties.IsOffscreenBehavior="Offscreen" Volume="30"/>
+        <MediaElement x:Name="snd1" HorizontalAlignment="Left" Height="100" Margin="166,476,0,-126" VerticalAlignment="Top" Width="100" Source="pack://siteoforigin:,,,/Resources/Button1.wav" Tag="1" LoadedBehavior="Manual" UnloadedBehavior="Manual" AutomationProperties.IsOffscreenBehavior="Offscreen" Volume="30"/>
+        <MediaElement x:Name="sndIncorrect" HorizontalAlignment="Left" Height="100" Margin="32,476,0,-126" VerticalAlignment="Top" Width="100" Source="pack://siteoforigin:,,,/Resources/Incorrect.wav" LoadedBehavior="Manual" UnloadedBehavior="Stop" AutomationProperties.IsOffscreenBehavior="Offscreen" Volume="30"/>
 
     </Grid>
 </Window>

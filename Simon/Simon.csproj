@@ -118,5 +118,29 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\puntuacions.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Button1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Button2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Button3.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Button4.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Button5.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Button6.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Incorrect.wav" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

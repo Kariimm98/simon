@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,12 @@ namespace Simon
     /// <summary>
     /// Lógica de interacción para MainWindow.xaml
     /// </summary>
+    /// 
+    public struct MyData
+    {
+        public int puntuacio { set; get; }
+        public string nom { set; get; }
+    }
     public partial class MainWindow : Window
     {
         Singleton singleton;
@@ -29,8 +36,46 @@ namespace Simon
 
         private void init()
         {
+            getScores();
             lbError.Visibility = Visibility.Hidden;
             singleton =  Singleton.Instance;
+        }
+
+        private void getScores()
+        {
+            Dictionary<String, int> map = new Dictionary<string, int>();
+            DataGridTextColumn col1 = new DataGridTextColumn();
+            DataGridTextColumn col2 = new DataGridTextColumn();
+
+            tbPuntuacions.Columns.Add(col1);
+            tbPuntuacions.Columns.Add(col2);
+
+            col1.Binding = new Binding("nom");
+            col2.Binding = new Binding("puntuacio");
+
+            col1.Header = "Nom";
+            col2.Header = "Puntuació";
+
+            StreamReader fichero = new StreamReader(System.IO.Path.GetFullPath(@"..\..\") + "/Resources/puntuacions.txt");
+            String fitx = fichero.ReadToEnd();
+
+            String[] puntuacions = fitx.Split(new string[] { Environment.NewLine },StringSplitOptions.None);
+
+            foreach(String punt in puntuacions)
+            {
+                String[] row = punt.Split(' ');
+                map.Add(row[0], int.Parse(row[1]));
+            }
+
+
+            foreach (var item in map.OrderByDescending(key => key.Value))
+            {
+                tbPuntuacions.Items.Add(new MyData
+                {
+                    puntuacio = item.Value,
+                    nom = item.Key
+                });
+            }
         }
 
         private void BtStart_Click(object sender, RoutedEventArgs e)
@@ -44,6 +89,7 @@ namespace Simon
             PantallaJoc pantalla = initPantallaJoc();
 
             pantalla.Show();
+            pantalla.start();
 
             this.Hide();
         }
@@ -53,15 +99,17 @@ namespace Simon
             PantallaJoc res = new PantallaJoc(txNom.Text);
             res.KeyDown += res.Window_KeyDown;
             res.KeyUp += res.Window_KeyUp;
-            res.UnableKeys = () =>
+
+            res.UnableListener = () =>
             {
                 res.KeyDown -= res.Window_KeyDown;
                 res.KeyUp -= res.Window_KeyUp;
             };
-            res.EnableKeys = () =>
+
+            res.EnableListener = () =>
             {
-                res.KeyDown -= res.Window_KeyDown;
-                res.KeyUp -= res.Window_KeyUp;
+                res.KeyDown += res.Window_KeyDown;
+                res.KeyUp += res.Window_KeyUp;
             };
 
             return res;
