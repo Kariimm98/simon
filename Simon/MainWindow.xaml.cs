@@ -43,7 +43,7 @@ namespace Simon
 
         private void getScores()
         {
-            Dictionary<String, int> map = new Dictionary<string, int>();
+            Dictionary<int, String> map = new Dictionary<int, String>();
             DataGridTextColumn col1 = new DataGridTextColumn();
             DataGridTextColumn col2 = new DataGridTextColumn();
 
@@ -56,24 +56,27 @@ namespace Simon
             col1.Header = "Nom";
             col2.Header = "Puntuació";
 
-            StreamReader fichero = new StreamReader(System.IO.Path.GetFullPath(@"..\..\") + "/Resources/puntuacions.txt");
-            String fitx = fichero.ReadToEnd();
+            StreamReader file = new StreamReader(System.IO.Path.GetFullPath(@"..\..\") + "/Resources/puntuacions.txt");
+            String fitx = file.ReadToEnd();
+            file.Close();
 
-            String[] puntuacions = fitx.Split(new string[] { Environment.NewLine },StringSplitOptions.None);
-
-            foreach(String punt in puntuacions)
+            String[] puntuacions = fitx.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            int i = 1;
+            foreach (String punt in puntuacions)
             {
-                String[] row = punt.Split(' ');
-                map.Add(row[0], int.Parse(row[1]));
+                if (punt.Length != 0)
+                {
+                    map.Add(i, punt);
+                    i++;
+                }
             }
 
-
-            foreach (var item in map.OrderByDescending(key => key.Value))
+            foreach (var item in map.OrderByDescending(key =>int.Parse(key.Value.Split(' ')[1])))
             {
                 tbPuntuacions.Items.Add(new MyData
                 {
-                    puntuacio = item.Value,
-                    nom = item.Key
+                    puntuacio = int.Parse(item.Value.Split(' ')[1]),
+                    nom = item.Value.Split(' ')[0]
                 });
             }
         }
@@ -121,6 +124,16 @@ namespace Simon
 
             ajuda.Show();
             this.Close();
+        }
+
+        private void BtTancar_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
+        }
+
+        private void TbPuntuacions_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

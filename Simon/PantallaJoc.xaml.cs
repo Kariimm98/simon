@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -24,7 +25,7 @@ namespace Simon
         Random random = new Random();
         String nom = "";
         int puntuacio = 0;
-        int interval = 2;
+        int interval = 1;
 
         System.Windows.Threading.DispatcherTimer dispatcher = new System.Windows.Threading.DispatcherTimer();
 
@@ -101,14 +102,6 @@ namespace Simon
         {
             int score = Int32.Parse(lbScore.Content.ToString());
 
-            if (score <= 2)
-            {
-                interval = 2;
-            }
-            else if (score <= 5)
-            {
-                interval = 1;
-            }
 
             dispatcher.Interval = TimeSpan.FromSeconds(interval);
         }
@@ -226,6 +219,12 @@ namespace Simon
 
                 sndIncorrect.Play();
 
+
+                using (StreamWriter writer1 = new StreamWriter(Path.GetFullPath(@"..\..\") + "/Resources/puntuacions.txt", append: true))
+                {
+                    writer1.WriteLine();
+                    writer1.Write(lbNom.Content+" "+lbScore.Content);
+                }
                 lbError.Visibility = Visibility.Visible;
                 Pausa pausa = new Pausa();
 
